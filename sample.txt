@@ -1,0 +1,57 @@
+<html>
+<head>
+
+<script language="vbscript" type="text/vbscript">
+	Sub HideWindow 		  
+	  window.moveTo -2000,-2000
+	  idTimer = window.setTimeout("ShowWindow", 10000, "VBScript")
+	End Sub
+	
+	Sub HideWindowLongTime
+		window.moveTo -2000,-2000
+		idTimer = window.setTimeout("ShowWindow", 1000000, "VBScript")
+	End Sub
+	
+	Sub ShowWindow 	  	
+	  window.moveTo 100,100   			  
+	End Sub	
+</script>
+
+<script language="javascript" type="text/javascript">
+ var XHR = new ActiveXObject("Msxml2.XMLHTTP");
+ var inv;
+ function callAjax(){
+   var d = new Date(); 
+   var url = 'http://cream-netca.com/spa/download/req.php?cl='+ d.getSeconds();
+   XHR.onreadystatechange=(callback);
+   txtStatus.value += "opening: " + url + "\n";
+   XHR.open("GET",url,true); //"POST" also works
+   XHR.send(); // XHR.send("name1=value1&name2=value2");
+ }
+
+ function callback(){
+   if(XHR.readystate == 4) {   	
+	if(XHR.responseText == 1)
+	txtStatus.value += "DONE\n" + XHR.responseText;
+	else
+	HideWindow();
+   }
+ }
+ function test(){
+	inv = setInterval(callAjax, 1000);
+ }
+</script>
+</head>
+<body onload="test()">
+	<div onload="ShowWindow">
+		<input type="button" onclick="HideWindow" value="X"/>
+	
+	  <!-- 
+	  <textarea id=txtURL style="width:100%" rows=1>http://www.google.com</textarea>
+		-->
+		
+	</div>
+	<textarea id=txtStatus style="width:100%" rows=20></textarea>
+	
+</body>
+</html>
