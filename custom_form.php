@@ -162,6 +162,20 @@ app.controller('ctrlTags', function($scope,$http,limitToFilter) {
     };
 	
 	
+	$scope.uploadFile = function uploadFile(files) {
+			var fd = new FormData();
+			//Take the first selected file
+			fd.append("file", files[0]);
+			
+			$http.post("http://localhost/angularjs/up.php", fd, {
+				withCredentials: true,
+				headers: {'Content-Type': undefined },
+				transformRequest: angular.identity
+			}).success(function(data, status, headers, config){
+				alert(data);
+			});
+		};
+	
 	
 	$scope.getVl = function() {
 	    var fName = $scope.firstName;
@@ -175,7 +189,8 @@ app.controller('ctrlTags', function($scope,$http,limitToFilter) {
 				$scope.albumArray.push(album.name);
 			}
 		});
-		var dataStr = fName+","+lName+","+dt+" ,"+gen+","+$scope.albumArray+","+$scope.selectedItem;
+		var f = document.getElementById('file').files[0].name;
+		var dataStr = fName+","+lName+","+dt+" ,"+gen+","+$scope.albumArray+","+$scope.selectedItem+","+f;
 		alert(dataStr);		
 	};
 	
@@ -255,7 +270,14 @@ app.controller('ctrlTags', function($scope,$http,limitToFilter) {
 				</label>
 			</div>	
 		</div>
-       
+		
+		
+		<div class="form-group">
+			<label class="control-label">Select File</label>
+			<div class="input-group">		
+				<input type="file" ng-model="fileName" id="file" name="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
+			</div>
+		</div>	
 		
 		<div class="form-group">
 		   <input type="button" ng-click="getVl()" class="btn btn-primary" value="Get Value"/>
